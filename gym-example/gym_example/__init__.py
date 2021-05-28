@@ -12,6 +12,11 @@ register(
 )
 
 register(
+    id="caching-v020",
+    entry_point="gym_example.envs:Caching_v020",
+)
+
+register(
     id="fail-v1",
     entry_point="gym_example.envs:Fail_v1",
 )

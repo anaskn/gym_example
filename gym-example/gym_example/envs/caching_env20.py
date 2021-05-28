@@ -8,7 +8,7 @@ from ray.rllib.env.env_context import EnvContext
 
 
 
-class Caching_v0(gym.Env):
+class Caching_v020(gym.Env):
     """Example of a custom env in which you have to walk down a corridor.
 
     You can configure the length of the corridor via the env config."""
@@ -42,7 +42,7 @@ class Caching_v0(gym.Env):
             nei_req.append(-99)
             cache_on_tab.append(0)
             neighbor_number_tab.append(0)
-            ttl_tab.append(np.zeros(40))
+            ttl_tab.append(np.zeros(20))
         
         self.caching_cap =  tab_cache 
         self.request = tab_request
@@ -126,9 +126,8 @@ class Caching_v0(gym.Env):
         variable = self.variable 
         reward=[]
         R_c = variable[0]
-        C_o = variable[1]
-        C_u = variable[2]
-        fact_k = variable[3] 
+        C = variable[1]
+        fact_k = variable[2] 
 
         unused_shared = []
         unused_own = []
@@ -150,8 +149,8 @@ class Caching_v0(gym.Env):
            
             
             f = R_c * max(0, (1-action[zz]) * self.caching_cap[zz] )  \
-               - C_u * ( max(0,  (self.request[zz][i]-(action[zz]*self.caching_cap[zz]))) + max(0, ( cache1 - (1-action[zz])*self.caching_cap[zz])/fact_k)  ) \
-                  - C_o * ( max(0, ((action[zz]*self.caching_cap[zz])-self.request[zz][i])/fact_k) + max (0, ((1-action[zz])*self.caching_cap[zz]) - cache1) )  
+               - C* ( max(0,  (self.request[zz][i]-(action[zz]*self.caching_cap[zz]))) + max(0, ( cache1 - (1-action[zz])*self.caching_cap[zz])/fact_k)  ) \
+                  - C* ( max(0, ((action[zz]*self.caching_cap[zz])-self.request[zz][i])/fact_k) + max (0, ((1-action[zz])*self.caching_cap[zz]) - cache1) )  
         
             unused_shared.append( float(max(0,(1-action[zz])*self.caching_cap[zz] - cache1  )))
             unused_own.append( float(max(0, (action[zz] * self.caching_cap[zz])-self.request[zz][i] )))
@@ -164,7 +163,7 @@ class Caching_v0(gym.Env):
             self.cache_on[zz] = min(self.request[zz][i], ((action[zz]*100) * self.caching_cap[zz]) / 100.0)  \
                 + min(self.neigbors_request[zz], (((1-action[zz])*100) * self.caching_cap[zz]) / 100.0)
         
-        if self.epochs_num==39:
+        if self.epochs_num==19:
             done = True
         else:
             done = False
